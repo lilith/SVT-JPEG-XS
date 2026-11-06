@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Require the expected number of GoogleTest cases to complete without skips or failures."""
+
 import json
 import pathlib
 import sys
