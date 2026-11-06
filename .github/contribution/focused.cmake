@@ -1,0 +1,18 @@
+# Fork-only validation support; this file is not part of the proposed patches.
+function(add_contribution_test)
+    get_target_property(test_includes SvtJpegxsUnitTests INCLUDE_DIRECTORIES)
+    get_target_property(test_libraries SvtJpegxsUnitTests LINK_LIBRARIES)
+    list(FILTER test_libraries EXCLUDE REGEX "TARGET_OBJECTS:SvtJpegxsUnitTests_AVX512")
+    add_executable(ContributionTests "${PROJECT_SOURCE_DIR}/${CONTRIBUTION_SOURCE}")
+    target_include_directories(ContributionTests PRIVATE ${test_includes})
+    target_compile_definitions(ContributionTests PRIVATE BUILD_TESTING)
+    set_target_properties(ContributionTests PROPERTIES CXX_STANDARD 14)
+    if(ARCH_X86_64 AND NOT MSVC)
+        target_compile_options(ContributionTests PRIVATE -mavx2)
+    endif()
+    target_link_libraries(ContributionTests PRIVATE ${test_libraries})
+endfunction()
+
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    cmake_language(DEFER CALL add_contribution_test)
+endif()

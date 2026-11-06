@@ -1,0 +1,55 @@
+name: Fork contribution preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        patch:
+          - fix-sd-decoder-rows
+          - fix-bmi2-test-registration
+          - fix-logging-test-cleanup
+          - test-four-component-decomposition
+        platform: [gcc, clang, windows]
+    runs-on: ${{ matrix.platform == 'windows' && 'windows-2022' || 'ubuntu-24.04' }}
+    timeout-minutes: 40
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 2
+      ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+      UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+      PYTHONDONTWRITEBYTECODE: 1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: automation
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ matrix.patch }}
+          path: source
+      - name: Install Linux tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y nasm ninja-build valgrind clang clang-format
+      - name: Install Windows assembler
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install nasm --no-progress -y
+          'C:\Program Files\NASM' >> $env:GITHUB_PATH
+      - name: Build and test selected patch
+        shell: bash
+        run: python automation/.github/contribution/validate.py source "${{ matrix.platform }}" "${{ matrix.patch }}"
+      - name: Preserve results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ matrix.patch }}-${{ matrix.platform }}
+          path: source/preflight-results/
+          if-no-files-found: error
+          retention-days: 14
