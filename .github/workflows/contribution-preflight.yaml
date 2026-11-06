@@ -47,6 +47,21 @@ jobs:
         with:
           ref: ${{ matrix.patch }}
           path: source
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: matrix.platform == 'clang' && matrix.patch != 'fix-bmi2-test-registration'
+        with:
+          ref: 66adfcd86bc5504d49fe49e74fb1e6960e300163
+          path: registration-prerequisite
+          fetch-depth: 2
+      - name: Apply and record Clang test-registration prerequisite
+        if: matrix.platform == 'clang' && matrix.patch != 'fix-bmi2-test-registration'
+        shell: bash
+        run: |
+          mkdir -p source/preflight-results
+          git -C registration-prerequisite diff 4d7e116c3ef259529a0917060e5b113834ed4894 HEAD > source/preflight-results/test-registration.patch
+          git -C registration-prerequisite rev-parse HEAD > source/preflight-results/test-registration-revision.txt
+          git -C source apply preflight-results/test-registration.patch
+          git -C source diff --stat
       - name: Install Linux tools
         if: runner.os == 'Linux'
         timeout-minutes: 5

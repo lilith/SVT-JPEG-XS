@@ -36,6 +36,16 @@ tested independently on AVX2 machines without adding the BMI2 registration fix
 to the other submission branches. The complete ordinary unit suite still uses
 the unmodified upstream unit-test target.
 
+Clang's ordinary Release unit executable also hits the baseline AVX-512
+registration crash before running tests on an AVX2 runner. Therefore the Clang
+cells for the decoder, logging, and decomposition branches explicitly apply the
+separate BMI2 registration change, commit
+`66adfcd86bc5504d49fe49e74fb1e6960e300163`, before building. The workflow artifacts
+retain the exact prerequisite patch and its commit. No production code is
+overlaid. Submit the BMI2 registration change first; the other three patches
+remain separate contributions. Clang results for those three branches include
+this disclosed test-harness prerequisite.
+
 ## Contribution checks
 
 `format-coding.sh` was run in exported copies of all four branches on
