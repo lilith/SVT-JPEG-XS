@@ -40,3 +40,17 @@ ASAN_OPTIONS=halt_on_error=1:detect_leaks=1 UBSAN_OPTIONS=halt_on_error=1:print_
 
 On 2026-11-06 the focused set passed 78/78 under Valgrind and AddressSanitizer/UBSan. The Valgrind
 parent process freed all allocations; the logging children had no definite, indirect, or possible leaks.
+
+## Full-suite follow-up
+
+The full unit executable at `62ff8c39` (the first Sd correction) was checked with origin tracking
+and full leak checks on 2026-11-06. GoogleTest reported 12,386 passed, 22 skipped and 47 disabled
+tests. Memcheck reported zero errors and no allocations remaining in the parent. Valgrind masks
+AVX2 GFNI on this host, accounting for one additional skip relative to the native run.
+One logging child reported 64 possibly lost bytes from its joined thread container; the cleanup
+above removes that report in the focused fixed run. No suppressions or relaxed assertions were used.
+
+The updated fork at `9623b216` passed the full native suite: 12,426 passed, 18 skipped and 47 disabled.
+The fixed row output, helper registration and logging subprocesses passed 78/78 under Memcheck and
+AddressSanitizer/UBSan. The original full sweep and the focused fixed checks have distinct source
+revisions; these results do not claim a second full Memcheck sweep of the updated binary.
