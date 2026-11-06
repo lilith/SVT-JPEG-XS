@@ -25,3 +25,7 @@ Build/coverage_linux/*
 !Build/linux/PGO/
 !Build/linux/PGO/*.yuv
 !Build/linux/PGO/*.cmake
+
+# Python test-tool caches
+__pycache__/
+*.py[cod]
