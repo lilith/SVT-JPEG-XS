@@ -4,7 +4,7 @@ This audit covers the x86 unit executable after the memory-check fixes. The prev
 summary had 18 explicit skips and 47 disabled instances.
 
 | Category | Instances | Treatment |
-|---|---:|---|
+| --- | ---: | --- |
 | Four-component H=1/V=2 configurations | 2 | Check `SvtJxsErrorBadParameter` and empty output |
 | AVX-512 instruction paths unavailable on the host | 16 | Keep CPU guards; exercise assertions under ISA emulation |
 | Dequantization timing benchmarks | 8 | Explicit opt-in; ordinary correctness tests remain enabled |
