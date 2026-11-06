@@ -10,7 +10,9 @@ jobs:
   validate:
     strategy:
       fail-fast: false
-      max-parallel: 1
+      # Jobs use separate disposable runners; each runner builds serially with
+      # two compiler processes and never shares the local development checkout.
+      max-parallel: 3
       matrix:
         patch:
           - fix-sd-decoder-rows
