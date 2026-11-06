@@ -13,7 +13,7 @@ Base: `4d7e116c3ef259529a0917060e5b113834ed4894` (SVT-JPEG-XS 0.11.0).
 Reproduce after configuring with `BUILD_TESTING=ON`:
 
 ```sh
-SvtJpegxsUnitTests --gtest_filter='*FourComponentEncodeParam*'
+Bin/Release/SvtJpegxsUnitTests --gtest_filter='*FourComponentEncodeParam*'
 ```
 
 Validation: hosted compiler and memory-check results pending. All 30 matrix

@@ -15,8 +15,22 @@ Reproduce after configuring with `BUILD_TESTING=ON`:
 ```sh
 valgrind --error-exitcode=99 --leak-check=full --show-leak-kinds=all \
   --errors-for-leak-kinds=definite,indirect,possible \
-  SvtJpegxsUnitTests --gtest_filter='LogCallback.*:LogDefault.*'
+  Bin/Release/SvtJpegxsUnitTests --gtest_filter='LogCallback.*:LogDefault.*'
 ```
 
-Validation: hosted compiler and memory-check results pending. The C++ change
-matches the repository's `format-coding.sh` output. No public API changes.
+Validation on 2026-11-06: GCC 13.3 and Clang 18.1 builds on Ubuntu 24.04 use
+`-Wall -Wextra -Werror` and pass the full unit suites. All three focused logging
+cases pass under Valgrind (zero errors and zero definite, indirect, or possible
+leaks in parent and children) and ASan/UBSan. Formatting matches
+`format-coding.sh`; no public API changes.
+
+The Clang full-suite check explicitly applies the separate BMI2 test-registration
+prerequisite, commit `66adfcd86bc5504d49fe49e74fb1e6960e300163`.
+
+Windows validation is pending. Upstream compiles this POSIX subprocess fixture
+only outside `_WIN32`, so its Windows check builds and runs the complete suite
+and explicitly verifies zero applicable focused logging tests.
+
+Evidence: [GCC](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891766),
+[Windows](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145892016),
+[Clang and sanitizers](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42292655944/job/128149799158).
