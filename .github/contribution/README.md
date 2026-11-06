@@ -44,6 +44,16 @@ checker; that formatting-only correction preserves its Python AST. Markdown
 lint found one table separator spacing issue in the combined branch's audit;
 the separator was corrected without changing its content.
 
+The first hosted GCC 13.3 preflight passed all 72 decoder pixel cases, but its
+Debug Memcheck run found undefined reads when GoogleTest printed padding in
+`SdTailCase` as raw bytes. The decoder submission and combined branches now
+provide a field-based `PrintTo` overload. No pixel assertions were changed.
+
+The [initial run](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42289623446)
+is retained as failure evidence. The
+[corrected matrix](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42290621258)
+is running; its results are not yet a passing validation claim.
+
 The decoder branch documents row reconstruction in the existing decoder design
 document. No proposed patch changes the public API or license. Existing
 assertions remain intact. CPU-dependent tests and opt-in timing/diagnostic tests
