@@ -82,6 +82,20 @@ def main():
             "build",
             cwd=source / "Build/windows",
         )
+        # The batch script can return success after an MSBuild failure. Check
+        # the build through CMake directly as well, so its exit code is binding.
+        run(
+            [
+                "cmake",
+                "--build",
+                source / "Build/windows",
+                "--config",
+                "Release",
+                "--parallel",
+                "2",
+            ],
+            "verify-build",
+        )
         binary = source / "Bin/Release/SvtJpegxsUnitTests.exe"
     else:
         env["CC"] = "clang" if platform == "clang" else "gcc"
