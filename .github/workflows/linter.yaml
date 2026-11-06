@@ -8,6 +8,10 @@ on:
         description: Branch to run the scans on
         default: main
         type: string
+      paths_regex:
+        description: Files to check during manual contribution validation
+        default: '(\.github/contribution/|documentation/tests/(MemoryChecks|SkippedAndDisabled)\.md|documentation/decoder/svt-jpegxs-decoder-design\.md|tests/scripts/check_gtest_results\.py)'
+        type: string
 
 permissions:
   contents: read
@@ -36,7 +40,11 @@ jobs:
         uses: super-linter/super-linter/slim@2da136927bd4a73596db63044b504547c62cb854 # v9.0.0
         env:
           DISABLE_ERRORS: false
-          VALIDATE_ALL_CODEBASE: false
+          # A dispatch SHA belongs to the workflow branch, which can differ from
+          # the checked-out contribution branch. Select files explicitly rather
+          # than accepting an empty changed-file list for that event.
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          FILTER_REGEX_INCLUDE: ${{ github.event_name == 'workflow_dispatch' && inputs.paths_regex || '' }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASH_FILE_NAME: .shellcheck
           BASH_SEVERITY: "error"

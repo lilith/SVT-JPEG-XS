@@ -6,6 +6,9 @@ contribution-preflight patch='all' compiler='all':
 contribution-status run:
     gh run view {{run}} --json status,conclusion,jobs --jq '{status,conclusion,jobs:[.jobs[]|{databaseId,name,status,conclusion}]}'
 
+contribution-result run artifact destination:
+    gh run download '{{run}}' -n '{{artifact}}' -D '{{destination}}'
+
 contribution-lint:
     uvx black --check .github/contribution/*.py
     npm exec --yes --package=markdownlint-cli -- markdownlint -c .github/config/.markdown-lint.yml .github/contribution/*.md
