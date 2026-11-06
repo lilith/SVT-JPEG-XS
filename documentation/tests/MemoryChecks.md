@@ -59,3 +59,16 @@ The [reported-skip and disabled-case audit](SkippedAndDisabled.md) replaces the 
 configuration skips with rejection assertions. The full native suite then passes 12,428 tests with
 16 explicit hardware skips and 47 opt-in benchmark/diagnostic instances. All 16 explicitly skipped
 ISA tests plus AVX2 GFNI complete under SDE emulation (17/17, no skips).
+
+## Regression fixture portability
+
+The contributor preflight with GCC 13.3 and a Debug build found undefined reads
+in GoogleTest's raw-byte printer for `SdTailCase`: the struct has padding after
+its sample-depth field. A field-based `PrintTo` overload avoids reading that
+padding. All 72 decoder cases then pass Memcheck with zero errors and no heap
+blocks remaining in the parent. The pixel and stride-padding assertions remain
+unchanged.
+
+The same preflight with MSVC 19.44 found that Windows headers' `max` macro
+expands the regression's `std::max` calls. Parenthesizing the function name makes
+the two calls portable. The corrected fixture passes all 72 cases on Windows.
