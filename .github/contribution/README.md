@@ -23,8 +23,11 @@ retains build logs and GoogleTest JSON reports as workflow artifacts.
 The matrix runs GCC and Clang on Ubuntu 24.04 and MSVC on Windows Server 2022.
 Linux builds request `-Wall -Wextra -Werror`. Windows uses the project's
 `Build/windows/build.bat 2022 release test` command. All cells run the complete
-ordinary unit suite and require every focused regression to complete without
-skips. GCC cells additionally use Valgrind; Clang cells use ASan/UBSan.
+ordinary unit suite and require every applicable focused regression to complete
+without skips. The logging subprocess fixture is POSIX-only: its Windows cell
+builds and runs the complete Windows suite and explicitly verifies zero
+applicable focused tests. GCC cells additionally use Valgrind; Clang cells use
+ASan/UBSan.
 
 The sanitizer executable links the selected real test source and production
 objects, excluding unrelated AVX-512 test constructors. This lets each patch be

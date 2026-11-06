@@ -36,6 +36,12 @@ def main():
         ),
     }
     test_file, test_filter, expected = cases[patch]
+    if platform == "windows" and patch == "fix-logging-test-cleanup":
+        # Upstream encloses this entire POSIX subprocess fixture in !_WIN32.
+        # Still build and run the complete Windows suite, and explicitly verify
+        # that the focused filter has zero applicable tests on that platform.
+        expected = 0
+        print("Windows: logging subprocess fixture has 0 applicable tests", flush=True)
 
     def run(args, name, cwd=source, env=None):
         print("+", subprocess.list2cmdline(list(map(str, args))), flush=True)
