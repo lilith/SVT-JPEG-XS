@@ -54,3 +54,8 @@ The updated fork at `9623b216` passed the full native suite: 12,426 passed, 18 s
 The fixed row output, helper registration and logging subprocesses passed 78/78 under Memcheck and
 AddressSanitizer/UBSan. The original full sweep and the focused fixed checks have distinct source
 revisions; these results do not claim a second full Memcheck sweep of the updated binary.
+
+The [reported-skip and disabled-case audit](SkippedAndDisabled.md) replaces the two invalid
+configuration skips with rejection assertions. The full native suite then passes 12,428 tests with
+16 explicit hardware skips and 47 opt-in benchmark/diagnostic instances. All 16 explicitly skipped
+ISA tests plus AVX2 GFNI complete under SDE emulation (17/17, no skips).
