@@ -1,0 +1,246 @@
+{
+  "observed_at": "2026-11-06T21:19:34.232966+00:00",
+  "verified_cells": 12,
+  "required_cells": 12,
+  "results": [
+    {
+      "patch": "decoder",
+      "compiler": "gcc",
+      "source": "622b7dfde366c12ef3af397baf21a330c9a72813",
+      "full": {
+        "COMPLETED": 12422,
+        "SKIPPED": 22,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 72,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 72,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "memcheck_error_summaries": 1,
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291997083/job/128147501542"
+    },
+    {
+      "patch": "decoder",
+      "compiler": "clang",
+      "source": "622b7dfde366c12ef3af397baf21a330c9a72813",
+      "full": {
+        "COMPLETED": 12442,
+        "SKIPPED": 2,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 72,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 72,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "test_registration_prerequisite": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42292655944/job/128149799208"
+    },
+    {
+      "patch": "decoder",
+      "compiler": "windows",
+      "source": "622b7dfde366c12ef3af397baf21a330c9a72813",
+      "full": {
+        "COMPLETED": 12425,
+        "SKIPPED": 2,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 72,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291997083/job/128147501121"
+    },
+    {
+      "patch": "bmi2",
+      "compiler": "gcc",
+      "source": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "full": {
+        "COMPLETED": 12370,
+        "SKIPPED": 2,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "memcheck_error_summaries": 1,
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891498"
+    },
+    {
+      "patch": "bmi2",
+      "compiler": "clang",
+      "source": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "full": {
+        "COMPLETED": 12353,
+        "SKIPPED": 19,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42292655944/job/128149798834"
+    },
+    {
+      "patch": "bmi2",
+      "compiler": "windows",
+      "source": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "full": {
+        "COMPLETED": 12336,
+        "SKIPPED": 19,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891879"
+    },
+    {
+      "patch": "logging",
+      "compiler": "gcc",
+      "source": "d9c69aa0b7cb3d37cc70a67a6abad8f3e8d8704f",
+      "full": {
+        "COMPLETED": 12350,
+        "SKIPPED": 22,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "memcheck_error_summaries": 4,
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891766"
+    },
+    {
+      "patch": "logging",
+      "compiler": "clang",
+      "source": "d9c69aa0b7cb3d37cc70a67a6abad8f3e8d8704f",
+      "full": {
+        "COMPLETED": 12370,
+        "SKIPPED": 2,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 3,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "test_registration_prerequisite": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42292655944/job/128149799158"
+    },
+    {
+      "patch": "logging",
+      "compiler": "windows",
+      "source": "d9c69aa0b7cb3d37cc70a67a6abad8f3e8d8704f",
+      "full": {
+        "COMPLETED": 12353,
+        "SKIPPED": 2,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 0,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145892016"
+    },
+    {
+      "patch": "decomposition",
+      "compiler": "gcc",
+      "source": "54665cdac3f0cab48ee413267bef3fb1b6e90a7e",
+      "full": {
+        "COMPLETED": 12352,
+        "SKIPPED": 20,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 30,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 30,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "memcheck_error_summaries": 1,
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891910"
+    },
+    {
+      "patch": "decomposition",
+      "compiler": "clang",
+      "source": "54665cdac3f0cab48ee413267bef3fb1b6e90a7e",
+      "full": {
+        "COMPLETED": 12355,
+        "SKIPPED": 17,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 30,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "instrumented": {
+        "COMPLETED": 30,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "test_registration_prerequisite": "66adfcd86bc5504d49fe49e74fb1e6960e300163",
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42292655944/job/128149799267"
+    },
+    {
+      "patch": "decomposition",
+      "compiler": "windows",
+      "source": "54665cdac3f0cab48ee413267bef3fb1b6e90a7e",
+      "full": {
+        "COMPLETED": 12335,
+        "SKIPPED": 20,
+        "SUPPRESSED": 47
+      },
+      "focused": {
+        "COMPLETED": 30,
+        "SKIPPED": 0,
+        "SUPPRESSED": 0
+      },
+      "evidence_url": "https://github.com/lilith/SVT-JPEG-XS/actions/runs/42294274524/job/128155361190"
+    }
+  ]
+}

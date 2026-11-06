@@ -27,9 +27,9 @@ leaks in parent and children) and ASan/UBSan. Formatting matches
 The Clang full-suite check explicitly applies the separate BMI2 test-registration
 prerequisite, commit `66adfcd86bc5504d49fe49e74fb1e6960e300163`.
 
-Windows validation is pending. Upstream compiles this POSIX subprocess fixture
-only outside `_WIN32`, so its Windows check builds and runs the complete suite
-and explicitly verifies zero applicable focused logging tests.
+The Windows Server 2022/MSVC 19.44 build and full unit suite also pass. Upstream
+compiles this POSIX subprocess fixture only outside `_WIN32`; the Windows check
+explicitly verifies zero applicable focused logging tests.
 
 Evidence: [GCC](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145891766),
 [Windows](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42291525543/job/128145892016),

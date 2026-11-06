@@ -61,9 +61,9 @@ Debug Memcheck run found undefined reads when GoogleTest printed padding in
 provide a field-based `PrintTo` overload. No pixel assertions were changed.
 
 The [initial run](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42289623446)
-is retained as failure evidence. The
-[corrected matrix](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42290621258)
-is running; its results are not yet a passing validation claim.
+is retained as failure evidence. The corrected runs verify all 12 required patch/compiler combinations.
+[Per-cell results and source commits](validation-results.json) retain the
+individual successful job links; older failed attempts remain visible.
 
 The decoder branch documents row reconstruction in the existing decoder design
 document. No proposed patch changes the public API or license. Existing
@@ -83,3 +83,35 @@ Draft descriptions:
 - [BMI2 registration](bmi2-pr.md)
 - [Logging subprocess cleanup](logging-pr.md)
 - [Invalid decomposition assertions](decomposition-pr.md)
+
+## Verified results, 2026-11-06
+
+All 12 patch/compiler combinations pass their complete ordinary unit suites.
+The focused checks complete without skips:
+
+| Patch | GCC and Valgrind | Clang and ASan/UBSan | Windows/MSVC |
+| --- | ---: | ---: | ---: |
+| Decoder rows | 72/72 | 72/72 | 72/72 |
+| BMI2 registration | 3/3 | 3/3 | 3/3 |
+| Logging subprocess cleanup | 3/3 | 3/3 | 0 applicable, full suite passes |
+| Decomposition rejection | 30/30 | 30/30 | 30/30 |
+
+Compilers: GCC 13.3 and Clang 18.1.3 on Ubuntu 24.04; MSVC 19.44 on
+Windows Server 2022. Every focused Memcheck run reports zero errors. The logging
+children have zero definite, indirect, or possible leaks. The Clang prerequisite
+is disclosed above and recorded in the artifacts.
+
+Full-suite CPU-dependent skips vary with the runner; the 47 pre-existing disabled
+timing/diagnostic instances remain disabled. The two invalid-decomposition skips
+are replaced by rejection assertions only on the decomposition branch. These
+are GoogleTest execution counts, not an exhaustive claim about every legacy
+fixture's internal parameter loop.
+
+The original manual linter returned success without selecting files when the
+dispatch SHA differed from the checked-out branch. The fork's manual mode now
+uses an explicit contribution-file filter and validates the entire selection.
+Real Super-linter checks pass for [fork tooling](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42294662786),
+[combined tooling](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42294667048),
+and [decoder documentation](https://github.com/lilith/SVT-JPEG-XS/actions/runs/42294670932).
+Black's log confirms two Python files checked on the fork tooling branch.
+The pull-request lint mode retains its upstream behavior.
