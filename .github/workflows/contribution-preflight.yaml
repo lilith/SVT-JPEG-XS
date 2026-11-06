@@ -2,6 +2,22 @@ name: Fork contribution preflight
 
 on:
   workflow_dispatch:
+    inputs:
+      patch:
+        description: Submission branch, or all four branches
+        type: choice
+        default: all
+        options:
+          - all
+          - fix-sd-decoder-rows
+          - fix-bmi2-test-registration
+          - fix-logging-test-cleanup
+          - test-four-component-decomposition
+      compiler:
+        description: Compiler platform, or the complete matrix
+        type: choice
+        default: all
+        options: [all, gcc, clang, windows]
 
 permissions:
   contents: read
@@ -14,12 +30,8 @@ jobs:
       # two compiler processes and never shares the local development checkout.
       max-parallel: 3
       matrix:
-        patch:
-          - fix-sd-decoder-rows
-          - fix-bmi2-test-registration
-          - fix-logging-test-cleanup
-          - test-four-component-decomposition
-        platform: [gcc, clang, windows]
+        patch: ${{ fromJSON(inputs.patch == 'all' && '["fix-sd-decoder-rows","fix-bmi2-test-registration","fix-logging-test-cleanup","test-four-component-decomposition"]' || format('["{0}"]', inputs.patch)) }}
+        platform: ${{ fromJSON(inputs.compiler == 'all' && '["gcc","clang","windows"]' || format('["{0}"]', inputs.compiler)) }}
     runs-on: ${{ matrix.platform == 'windows' && 'windows-2022' || 'ubuntu-24.04' }}
     timeout-minutes: 40
     env:
@@ -39,6 +51,12 @@ jobs:
         if: runner.os == 'Linux'
         timeout-minutes: 5
         run: |
+          # Use Ubuntu's public mirror instead of a slow regional Azure mirror.
+          for mirrors in /etc/apt/apt-mirrors.txt /etc/apt/apt-mirrors-security.txt; do
+            if [[ -f "$mirrors" ]]; then
+              sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' "$mirrors"
+            fi
+          done
           options=(-o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30)
           sudo apt-get "${options[@]}" update
           sudo apt-get "${options[@]}" install -y nasm ninja-build valgrind clang clang-format

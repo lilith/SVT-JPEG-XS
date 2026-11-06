@@ -19,6 +19,7 @@ outside the four proposed upstream patches.
 Run the manual **Fork contribution preflight** workflow on the fork's `main`.
 It checks out each submission branch separately, records its source commit, and
 retains build logs and GoogleTest JSON reports as workflow artifacts.
+The `patch` and `compiler` inputs can select a single matrix cell for a rerun.
 
 The matrix runs GCC and Clang on Ubuntu 24.04 and MSVC on Windows Server 2022.
 Linux builds request `-Wall -Wextra -Werror`. Windows uses the project's

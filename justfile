@@ -1,7 +1,7 @@
 # Fork-only contribution tooling; submission branches keep upstream build files.
 
-contribution-preflight:
-    gh workflow run contribution-preflight.yaml --ref main
+contribution-preflight patch='all' compiler='all':
+    gh workflow run contribution-preflight.yaml --ref main -f patch={{patch}} -f compiler={{compiler}}
 
 contribution-status run:
     gh run view {{run}} --json status,conclusion,jobs --jq '{status,conclusion,jobs:[.jobs[]|{databaseId,name,status,conclusion}]}'
