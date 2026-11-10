@@ -186,24 +186,34 @@ typedef struct svt_jpeg_xs_encoder_api {
     uint8_t lossless_enable;
 
     /* Frame rate of the stream, fps_numerator/fps_denominator frames per second (e.g. 60000/1001).
-     * Used only to derive the level (Plev): every ISO/IEC 21122-2 level bounds the number of
+     * Used to derive and check the level (Plev): every ISO/IEC 21122-2 level bounds the number of
      * sampling grid points per second, so without a frame rate the auto-derived level is
-     * Unrestricted (a warning is printed when verbose >= VERBOSE_WARNINGS). Not used when
-     * level_plev_override is set. For interlaced video, pass the field rate.
+     * Unrestricted (a warning is printed when verbose >= VERBOSE_WARNINGS). A known frame rate
+     * also checks level_plev_override; an unknown rate leaves its timing externally asserted.
+     * For interlaced video, pass the field rate.
      * fps_numerator = 0: frame rate unknown (default).
      * fps_denominator must be non-zero when fps_numerator is set.
      * Optional, default 0/1 (unknown) */
     uint32_t fps_numerator;
     uint32_t fps_denominator;
 
+    /* Reject known incompatible stream profile/level declarations at encoder initialization.
+     * 0 = preserve verbatim overrides with warnings (default).
+     * 1 = return SvtJxsErrorBadParameter for a failed profile/level configuration check.
+     * This checks the finalized coding parameters and, when supplied, the frame rate and
+     * fixed codestream size. Unknown timing is not a violation: an explicit level may assert
+     * an external clock. Decoder smoothing-buffer conformance is not checked, including the
+     * Light and Light-Subline Nsbu constraints. Success is not full Part-2 certification.
+     * Optional, default 0; other values are rejected. */
+    uint8_t strict_stream_declarations;
+
     /* This padding is used to avoid changing the size of the public configuration struct
      * when new parameters are added in the future please follow these steps:
      * 1. Insert the new parameter as a member of this structure before the padding array.
      * 2. Decrease the size of the padding array by the size of the new parameter to keep the struct size unchanged.
      */
-    /* 44 bytes: 55 minus the 3 alignment bytes before fps_numerator and the 8 bytes of
-     * fps_numerator/fps_denominator. */
-    uint8_t padding[44];
+    /* 43 bytes: one byte consumed by strict_stream_declarations. */
+    uint8_t padding[43];
 } svt_jpeg_xs_encoder_api_t;
 
 /* STEP 0: Set default encoder parameters.

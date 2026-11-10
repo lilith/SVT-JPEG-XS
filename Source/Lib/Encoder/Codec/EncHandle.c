@@ -326,6 +326,13 @@ static SvtJxsErrorType_t encoder_init_configuration(svt_jpeg_xs_encoder_common_t
         }
     }
 
+    if (config_struct->strict_stream_declarations > 1) {
+        if (config_struct->verbose >= VERBOSE_ERRORS) {
+            SVT_ERROR("strict_stream_declarations must be 0 or 1!\n");
+        }
+        return SvtJxsErrorBadParameter;
+    }
+
     if (config_struct->fps_numerator != 0 && config_struct->fps_denominator == 0) {
         if (config_struct->verbose >= VERBOSE_ERRORS) {
             SVT_ERROR("fps_denominator cannot be 0 when fps_numerator is set!\n");
@@ -628,7 +635,8 @@ static SvtJxsErrorType_t encoder_init_configuration(svt_jpeg_xs_encoder_common_t
     }
 
     /* The profile depends on finalized syntax (Hsl, Lh), so derive it only after pi_compute().
-     * Overrides are written verbatim, with a warning for every restriction the stream breaks. */
+     * Overrides remain verbatim by default. Strict mode rejects known incompatibilities. */
+    uint32_t declaration_problems = 0;
     StreamProfileParams profile_params;
     profile_params.colour_format = enc_common->colour_format;
     profile_params.width = pi->width;
@@ -642,7 +650,7 @@ static SvtJxsErrorType_t encoder_init_configuration(svt_jpeg_xs_encoder_common_t
     profile_params.colour_transform = enc_common->hdr_Cpih ? 1 : 0;
     if (config_struct->profile_ppih_override != 0) {
         enc_common->hdr_Ppih = config_struct->profile_ppih_override;
-        check_stream_profile_ppih(enc_common->hdr_Ppih, &profile_params, config_struct->verbose);
+        declaration_problems += check_stream_profile_ppih(enc_common->hdr_Ppih, &profile_params, config_struct->verbose);
     }
     else {
         enc_common->hdr_Ppih = derive_stream_profile_ppih(&profile_params, config_struct->verbose);
@@ -658,10 +666,19 @@ static SvtJxsErrorType_t encoder_init_configuration(svt_jpeg_xs_encoder_common_t
     level_params.lossless = config_struct->lossless_enable ? 1 : 0;
     if (config_struct->level_plev_override != 0xFFFF) {
         enc_common->hdr_Plev = config_struct->level_plev_override;
-        check_stream_level_plev(enc_common->hdr_Plev, enc_common->hdr_Ppih, &level_params, config_struct->verbose);
+        declaration_problems += check_stream_level_plev(
+            enc_common->hdr_Plev, enc_common->hdr_Ppih, &level_params, config_struct->verbose);
     }
     else {
         enc_common->hdr_Plev = derive_stream_level_plev(&level_params, config_struct->verbose);
+    }
+
+    if (config_struct->strict_stream_declarations && declaration_problems != 0) {
+        if (config_struct->verbose >= VERBOSE_ERRORS) {
+            SVT_ERROR("Stream profile/level declaration conflicts with the encoder configuration (%u problems).\n",
+                      declaration_problems);
+        }
+        return SvtJxsErrorBadParameter;
     }
 
     if (config_struct->lossless_enable) {
