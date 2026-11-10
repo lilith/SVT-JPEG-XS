@@ -398,6 +398,12 @@ Coding features used during Rate Calculation (quality/speed trade-off):
   prints a warning for every restriction of the declared profile or level the stream breaks, for
   example High 444.12 with `--coding-raw 1`, or 2k-1 for a 3840x2160 picture.
 
+SDK callers may set `strict_stream_declarations=1` to reject known profile/level conflicts at
+initialization with `SvtJxsErrorBadParameter`. The default remains verbatim overrides with warnings.
+This checks coding parameters, known frame rate and fixed frame size. An explicit level with unknown
+frame rate remains an external timing assertion. Decoder smoothing-buffer conformance, including
+Light/Light-Subline Nsbu, is not checked; successful initialization is not full Part-2 certification.
+
 Threading, performance:
 
 ```text

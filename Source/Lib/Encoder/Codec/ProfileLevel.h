@@ -93,7 +93,8 @@ uint16_t derive_stream_profile_ppih(const StreamProfileParams* params, uint32_t 
 /* Check a caller-declared Ppih (profile_ppih_override) against the stream parameters. Prints one
  * warning per violated restriction when verbose >= VERBOSE_SYSTEM_INFO, and one for a codepoint
  * that is not a profile this encoder can produce. Returns the number of problems found (0 = the
- * declaration holds). Unrestricted (0x0000) always holds. */
+ * checked restrictions hold). Decoder smoothing-buffer constraints (including Light Nsbu) are
+ * not checked. Unrestricted (0x0000) always holds. */
 uint32_t check_stream_profile_ppih(uint16_t ppih, const StreamProfileParams* params, uint32_t verbose);
 
 typedef struct StreamLevelParams {
@@ -121,7 +122,8 @@ uint16_t derive_stream_level_plev(const StreamLevelParams* params, uint32_t verb
  * beyond the level, bits per pixel beyond the sublevel, a named sublevel for lossless coding, and
  * the Full sublevel with the Unrestricted profile. ppih is the declared profile, used for the Full
  * sublevel. Prints one warning per problem when verbose >= VERBOSE_SYSTEM_INFO and returns the
- * number of problems found. */
+ * number of known incompatibilities found. Zero does not certify unknown timing, unknown frame
+ * size or decoder smoothing-buffer behavior; an explicit level may assert an external clock. */
 uint32_t check_stream_level_plev(uint16_t plev, uint16_t ppih, const StreamLevelParams* params, uint32_t verbose);
 
 #ifdef __cplusplus
